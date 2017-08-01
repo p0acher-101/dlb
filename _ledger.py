@@ -56,7 +56,7 @@ def create_database():
         ledger = sqlite3.connect('ledger.db')
         print "Database Opened"
         myCursor = ledger.cursor()
-        myCursor.execute('CREATE TABLE IF NOT EXISTS Messages(Timestamp FLOAT PRIMARY KEY, Recipient TEXT NOT NULL, Sender TEXT NOT NULL, Subject TEXT, Message TEXT)')
+        myCursor.execute('CREATE TABLE IF NOT EXISTS Messages(Timestamp FLOAT PRIMARY KEY, Recipient TEXT NOT NULL, Message TEXT)')
         print "Table Created"    
     except sqlite3.Error, e:
         print "Database error %s" % e.args[0]
@@ -84,7 +84,7 @@ def add_entry(message):
             print "Duplicate Entry."
             return
         else:
-            myCursor.execute("INSERT INTO Messages(Timestamp,Recipient,Sender,Subject,Message) VALUES(?,?,?,?,?)", (message[0],message[1],message[2],message[3],message[4]))
+            myCursor.execute("INSERT INTO Messages(Timestamp,Recipient,Message) VALUES(?,?,?,)", (message[0],message[1],message[2],))
             ledger.commit()
             print "Message added"
     except sqlite3.Error, e:
@@ -122,52 +122,6 @@ def find_for(who):
         if ledger:
             ledger.close()         
 
-
-# Finds all messages from a passed in string.  Returns a list of tuples or a string if no records are found.            
-def find_from(who):
-    try:
-        ledger = sqlite3.connect('ledger.db')
-        myCursor = ledger.cursor()
-        myCursor.execute("SELECT * FROM Messages WHERE Sender =? ORDER BY Timestamp",(who,))
-        result = myCursor.fetchall()
-        if not result:
-            return "No Records match"
-        else:
-            return result        
-              
-    except sqlite3.Error, e:
-        print "Database error %s" % e.args[0]
-        if ledger:
-            ledger.rollback()
-            sys.exit(1)
-                            
-    finally:
-        if ledger:
-            ledger.close()        
-            
-# Finds all messages from a sender to a recipient as a list of tuples, or returns a string if not found.
-def find_from_to(fromWho, toWho):
-    try:
-        ledger = sqlite3.connect('ledger.db')
-        myCursor = ledger.cursor()
-        myCursor.execute("SELECT * FROM Messages WHERE Sender =? AND Recipient =? ORDER BY Timestamp",(fromWho,toWho,))
-        result = myCursor.fetchall()
-        if not result:
-            return "No Records match"
-        else:
-            return result        
-              
-    except sqlite3.Error, e:
-        print "Database error %s" % e.args[0]
-        if ledger:
-            ledger.rollback()
-            sys.exit(1)
-                            
-    finally:
-        if ledger:
-            ledger.close()        
-            
-            
             
 # Deletes all messages that are over 24 hours old.  
 

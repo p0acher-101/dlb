@@ -36,7 +36,7 @@ KEY_LENGTH = 2048
         
 
 # Creates an RSA Key pair.  Uses the pyCrypto random function.  Saves the key to a pemfile.  This function takes a while to run
-# But is not going to be run that often.  I.e. only run to create and identity.
+# But is not going to be run that often.  I.e. only run to create and identity. ***Need to provide some checking for overwrite***
 def create_key(name):
     random_generator = Random.new().read
     key = RSA.generate(KEY_LENGTH, random_generator)

@@ -12,8 +12,10 @@ import _lettercrypto
 
 
 class Message():
-    #time = _ledger.get_time()  #for testing duplicate entries
-    time = 1500811295.5641012
+    time = _ledger.get_time()  #for testing duplicate entries
+    SENDER = '[SENDER]'
+    SUBJECT = '[SUBJECT]'
+    BODY = '[BODY]'
     def set_data(self, recipient, sender, subject, body):
         self.recipient = recipient
         self.sender = sender
@@ -24,7 +26,9 @@ class Message():
         return [self.time, self.recipient, self.sender, self.subject, self.body]
     def display_message(self):
         print self.recipient, self.sender, self.subject, self.body, self.time
-
+    def message_out_4_encryption(self):
+        body = '[SENDER]' + str(self.sender) + '[SUBJECT]' + str(self.subject + '[BODY]' + self.body)
+        return (self.recipient, body)
 
 class peer():
     
@@ -43,6 +47,7 @@ if __name__ == '__main__':
     
     #x = Message()
     #x.set_data('Bob', 'Alice', 'Pizza','Do you like pizza?' )
+    #print x.message_out_4_encryption()
     #_ledger.create_database()
     #_ledger.display_peers()
     #_ledger.add_entry(x.message_out())
@@ -62,7 +67,9 @@ if __name__ == '__main__':
     #_ledger.create_nicks()
     #_ledger.add_nick(['Alice', '676789', 'ghggjjjkhjhk', 159000099999])
     #_lettercrypto.create_key('Bob')
-    #_lettercrypto.add_pubkey_ledger(_lettercrypto.share_pubkey('Bob'))
+    #_lettercrypto.create_key('Alice')
+    _lettercrypto.add_pubkey_ledger(_lettercrypto.share_pubkey('Bob'))
+    _lettercrypto.add_pubkey_ledger(_lettercrypto.share_pubkey('Alice'))
     #test =  _lettercrypto.share_pubkey('Bob')
    # print _lettercrypto.verify_nick(test)
     #_lettercrypto.encrypt('Bob', 'This is a test message.')
@@ -72,8 +79,7 @@ if __name__ == '__main__':
     #x = _lettercrypto.share_pubkey('Bob')
     #print x 
     #print _lettercrypto.baseencode(x)
-    x = _lettercrypto.encrypt('Bob', 'This is a test. And now has even more text in it.')
-    print x 
+    x = _lettercrypto.encrypt('Bob', 'This is a test. If you are reading this then encryption and decryption work!')
     print _lettercrypto.decrypt(x)
      
     
