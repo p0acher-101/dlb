@@ -373,7 +373,7 @@ def add_nick(nick):
             print "Record already exists."
             return
         else:
-            myCursor.execute('INSERT INTO Nicks(Nickname, Pubkey, Signature, Timestamp) VALUES(?,?,?,?)',(nick[0],nick[1],str(nick[2]),get_time()))
+            myCursor.execute('INSERT INTO Nicks(Nickname, Pubkey, Signature, Timestamp) VALUES(?,?,?,?)',(nick[0],nick[1],nick[2],get_time()))
             ledger.commit()
             print "Nickname added."
     except sqlite3.Error, e:
